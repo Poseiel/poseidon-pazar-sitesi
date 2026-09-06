@@ -1,6 +1,6 @@
 {
-  "son_guncelleme": "2026-09-05 21:08",
-  "rapor_tarihi": "2026-09-05",
+  "son_guncelleme": "2026-09-06 09:53",
+  "rapor_tarihi": "2026-09-06",
   "limanlar": [
     {
       "liman": "Ardencaple",
@@ -145,16 +145,23 @@
           "durum": ""
         },
         {
-          "armator": "louie_iii",
+          "armator": "sirrick",
+          "gemi": "Carpe Diem",
+          "tur": "Fırkateyn",
+          "taraf": "yabanci",
+          "durum": ""
+        },
+        {
+          "armator": "sirrick",
           "gemi": "Solway Lass",
           "tur": "Celiyye",
           "taraf": "yabanci",
           "durum": ""
         },
         {
-          "armator": "sirrick",
-          "gemi": "Carpe Diem",
-          "tur": "Fırkateyn",
+          "armator": "viidal",
+          "gemi": "Navcom",
+          "tur": "Ceneviz Gemisi",
           "taraf": "yabanci",
           "durum": ""
         }
@@ -162,7 +169,7 @@
       "sayim": {
         "bizim": 0,
         "dost": 0,
-        "yabanci": 6
+        "yabanci": 7
       }
     },
     {
