@@ -53,6 +53,7 @@ L.RasterCoords.prototype = {
 <nav class="tab-bar">
   <button class="tab-btn active" data-tab="pazar">Pazar</button>
   <button class="tab-btn" data-tab="emir">📨 Emir</button>
+  <button class="tab-btn" data-tab="emirdurum">📊 Emir Durumu</button>
   <button class="tab-btn" data-tab="envanter">Envanter</button>
   <button class="tab-btn" data-tab="sancak">Sancak Envanteri</button>
   <button class="tab-btn" data-tab="belediye">Belediye Envanteri</button>
@@ -100,6 +101,13 @@ L.RasterCoords.prototype = {
     <div id="envanter-ozet" class="envanter-ozet"></div>
     <div class="pazar-arac-cubugu">
       <input type="text" id="envanter-arama" placeholder="Eşya ara... (örn. Kılıç, Akçe)">
+      <!-- 👤 [06.09.2026] Kullanıcı: *"karakter filtresi istiyorum, mesela
+           aiegus yazdım, aiegus'un hangi malzemeleri var görebileyim."*
+           Yazarken tamamlansın diye datalist (açılır kutu 100 kişide
+           kullanışsız olurdu). -->
+      <input type="text" id="envanter-karakter-arama" list="envanter-karakter-listesi"
+             placeholder="👤 Karakter ara... (örn. aiegus)" autocomplete="off">
+      <datalist id="envanter-karakter-listesi"></datalist>
       <select id="envanter-esya-filtre">
         <option value="">▼ Eşya seç (aramadan)</option>
       </select>
@@ -356,13 +364,112 @@ L.RasterCoords.prototype = {
           düşen bir mesaj hiçbir hesabın kimliğini değiştiremesin.</li>
       </ol>
 
-      <h4>🚚 Görev zinciri (Ayar emrinin içinde)</h4>
-      <p>Hesaba <b>sıralı iş listesi</b> verir; bot her turda <b>bir adım</b> ilerletir.
-        Örnek: <span class="rehber-akis">seyahat:Ardencaple → satin_al:Çuval Mısır x10 → seyahat:Glasgow</span>
-        Bu üç adım üç günde biter, sen bir daha dokunmazsın.</p>
+      <h4>🚚 Görev zinciri — hesaba "iş listesi" vermek</h4>
+      <p>Bir hesaba <b>sıralı iş listesi</b> yazarsın; bot her turda
+        <b>ilerleyebildiği kadar</b> adım atar, arada boşa gün geçmez.
+        Adımları site kutularından seçersin, hiçbir şey ezberlemen gerekmez.</p>
+      <p class="rehber-akis">seyahat:Ardencaple → satin_al:Çuval Mısır x10 → seyahat:Glasgow</p>
+
+      <p class="rehber-not">📌 <b>Vardığı gün alışverişini yapar ve aynı gün
+        dönüş emrini verir.</b> "Git, al, dön" için fazladan gün beklemez;
+        süreyi belirleyen tek şey <b>yolculuğun kendisi</b>dir (oyun kuralı).
+        Malı da <b>varmadan</b> almaya çalışmaz — o şehre ulaştığı turda alır.</p>
       <p class="rehber-not">⚠️ Karakter iki şehir arasındayken oyun konum vermez;
-        bot bunu “varmadı” değil <b>“bilinmiyor”</b> sayar ve üstüne yeni emir yazmaz —
-        yani rota bozulmaz.</p>
+        bot bunu "varmadı" değil <b>"bilinmiyor"</b> sayar ve üstüne yeni emir
+        yazmaz — yani rota bozulmaz.</p>
+
+      <h5>Kullanabileceğin 13 adım</h5>
+      <table class="rehber-tablo">
+        <tr><th>Adım</th><th>Ne yapar</th><th>Dikkat</th></tr>
+        <tr><td>🚶 <b>seyahat:</b>Wigtown</td><td>O kasabaya <b>yola çıkarır</b> ve varana kadar her turda devam eder.</td><td>Kıta şehirlerine (Massa, Calais…) <b>kara yolu YOK</b> — oraya ancak gemiyle gidilir.</td></tr>
+        <tr><td>📍 <b>varinca:</b>Wigtown</td><td>"Oraya vardım mı?" diye <b>sadece bakar</b>. Kendisi yola çıkmaz.</td><td>Hesabı <b>başkası taşıyorsa</b> (grup takibi, gemi) bunu kullan. <b>seyahat:</b> yazarsan bot her turda üstüne yeni emir yazıp rotayı bozar.</td></tr>
+        <tr><td>🛒 <b>satin_al:</b>Çuval Buğday x20</td><td>Pazardan alır. Tavan fiyat verebilirsin.</td><td>Yabancı şehirde alınan mal <b>çantada</b> kalır (eve atılamaz), karakterle birlikte döner.</td></tr>
+        <tr><td>💸 <b>hersey_sat:</b>toyga</td><td>Pazardaki ilanları iptal eder, evi boşaltır ve <b>her şeyi</b> o hesaba en düşük fiyattan satar.</td><td><b>20 günlük yiyecek</b> bırakır, gerisini satar. Taşınmadan önce şart.</td></tr>
+        <tr><td>🏠 <b>ev_al</b></td><td>Bulunduğu kasabada <b>ev + tarla</b> alır.</td><td>Değer istemez. Parası 130 akçenin altındaysa <b>hiçbir şey almaz</b> (yarım kurulum olmasın).</td></tr>
+        <tr><td>🚚 <b>ev_tasi:</b>Wigtown</td><td>Evini bulunduğu kasabaya taşır.</td><td>⚠️ <b>Geri alınamaz</b> ve <b>ev sandığındaki her şeyi siler</b>, tarla+atölyeyi sıfırlar. Bu yüzden bot, sandık boş değilse <b>taşımayı reddeder</b>. Doğru sıra: hersey_sat → ev_tasi → ev_al → atolye.</td></tr>
+        <tr><td>🏭 <b>atolye:</b>Terzi</td><td>O meslek atölyesini satın alır.</td><td>Atölye o kasabada satılmıyorsa alamaz, ertesi tur yeniden dener.</td></tr>
+        <tr><td>👥 <b>grup_kur</b></td><td>Lider olur, grup kurar.</td><td>Değer istemez. Üyeler ancak grup kurulduktan sonra katılabilir — bot lideri <b>önce</b> sokar.</td></tr>
+        <tr><td>🤝 <b>gruba_katil:</b>Esteros</td><td>O kişinin grubuna katılır.</td><td>Liderin adını doğru yaz; bot katıl düğmesini <b>liderin adının altından</b> bulur.</td></tr>
+        <tr><td>👥 <b>grup_dagit</b></td><td>Grubu dağıtır <b>ve üyelerin "Grup Takip" modunu kendiliğinden kapatır</b>.</td><td>Değer istemez. Yalnızca lider basabilir.</td></tr>
+        <tr><td>🖥️ <b>takip:</b>Yok</td><td>Hesabın takip modunu değiştirir (Yok / Grup Takip / Ordu Takip / Alışverişçi).</td><td>Değişiklik <b>aynı turda</b> geçerli olur, ertesi güne kalmaz.</td></tr>
+        <tr><td>⛵ <b>gemiye_bin:</b>mr.butcher</td><td>Limandaki gemiye biner (<b>geminin sahibinin</b> adını yaz, geminin adını değil).</td><td>Bindikten sonra hesap yalnızca gemi işi yapar: tarla, meslek, pazar çalışmaz.</td></tr>
+        <tr><td>⏳ <b>bekle:</b>3</td><td>O kadar tur bekler.</td><td>Bu turlarda hesap <b>oyuna girer ama başka iş yapmaz</b>.</td></tr>
+      </table>
+
+      <h5>📦 Örnek 1 — "git, al, dön"</h5>
+      <p class="rehber-akis">seyahat:Stirling, satin_al:Çuval Buğday x20, seyahat:Glasgow</p>
+      <table class="rehber-tablo">
+        <tr><th>Gün</th><th>Nerede</th><th>Ne olur</th></tr>
+        <tr><td>1</td><td>Glasgow</td><td>Yemeğini yer, Stirling'e yola çıkar, tarlasına/madenine iş verir</td></tr>
+        <tr><td>2</td><td>Stirling</td><td><b>Vardı + 20 buğday aldı + dönüş emrini verdi</b> — üçü aynı gün</td></tr>
+        <tr><td>3</td><td>Glasgow</td><td>Vardı, zincir bitti → <b>normal moda döndü</b></td></tr>
+      </table>
+
+      <h5>🚚 Örnek 2 — 5 hesabı topluca taşımak (en güçlü kullanım)</h5>
+      <p>Diyelim <b>A</b> lider, <b>B·C·D·E</b> onunla birlikte Glasgow'dan
+        Wigtown'a taşınacak; herkes orada ev, tarla ve atölye kuracak.
+        <b>Tek sefer yazıyorsun, gerisi kendiliğinden oluyor.</b></p>
+      <table class="rehber-tablo">
+        <tr><th>Kim</th><th>Ayar</th><th>Görev zinciri</th></tr>
+        <tr><td><b>A</b> (lider)</td><td>👥 Grup Ayarları'nda lider A, üyeler B·C·D·E</td><td><span class="rehber-akis">seyahat:Wigtown, grup_dagit, ev_al, atolye:Demirci</span></td></tr>
+        <tr><td><b>B·C·D·E</b></td><td>takip = <b>Grup Takip</b></td><td><span class="rehber-akis">varinca:Wigtown, takip:Yok, ev_al, atolye:Terzi</span></td></tr>
+      </table>
+      <table class="rehber-tablo">
+        <tr><th>Gün</th><th>A (lider)</th><th>B·C·D·E</th></tr>
+        <tr><td>1</td><td>Grubu kurar — <b>o gün bilerek yola çıkmaz</b></td><td>Gruba katılır</td></tr>
+        <tr><td>2</td><td>Wigtown'a yola çıkar</td><td>Normal işini yapar <b>+ lideri takip eder</b></td></tr>
+        <tr><td>3-4</td><td>Yolda</td><td>Aynı</td></tr>
+        <tr><td><b>5</b><br><span class="rehber-eski">varış</span></td><td>Vardı → <b>grubu dağıttı</b> → ev + tarla + atölye aldı</td><td>Vardı → takip modu kapandı → <b>ev + tarla + atölye aldı</b></td></tr>
+        <tr><td>6</td><td>Normal mod</td><td>Normal mod</td></tr>
+      </table>
+      <p class="rehber-not">📌 <b>Varış günü boşa gitmez</b> — o gün hem ev/tarla/atölye
+        alınır hem de hesap normal işine (yemek, tarla, maden) devam eder.
+        Ev almak günü tüketen bir iş değildir.</p>
+      <p class="rehber-not">📌 Her hesaba <b>ayrı meslek</b> yazabilirsin
+        (<span class="rehber-eski">atolye:Bahçıvan</span>,
+        <span class="rehber-eski">atolye:Fırıncı</span>…). Hesapların oyuna giriş
+        sırası <b>önemsiz</b> — bot lideri kendiliğinden öne alır.</p>
+      <p class="rehber-not">⚠️ Takipçilere <b>seyahat:</b> yazma,
+        <b>varinca:</b> yaz. Onları oyunun grup mekaniği taşıyor; seyahat emri
+        verirsen bot her turda üstüne yazıp rotayı bozar.</p>
+      <p class="rehber-not">⚠️ Bir takipçi gruptan düşerse hedefe hiç varamaz.
+        Bot bunu <b>8 turdan sonra Telegram'a bildirir</b> ("mahsur kalmış
+        olabilir") — o hesaba elle <b>seyahat:</b> emri vermen gerekir.</p>
+
+      <h5>💸 Örnek 3 — evi taşımak (sıra çok önemli)</h5>
+      <p class="rehber-akis">hersey_sat:caspe, seyahat:Wigtown, ev_tasi:Wigtown, ev_al, atolye:Terzi</p>
+      <p class="rehber-not">⚠️ <b>hersey_sat başta olmak zorunda.</b> Taşınma ev
+        sandığındaki her şeyi siler; bot sandık boş değilse taşımayı reddeder
+        (bilerek — o eşyalar geri gelmez).</p>
+
+      <h5>⛵ Örnek 4 — kıta şehrine gitmek</h5>
+      <p class="rehber-akis">seyahat:Ardencaple, satin_al:Manda Eti x30, gemiye_bin:mr.butcher, bekle:12, seyahat:Massa</p>
+      <p class="rehber-not">⚠️ <b>seyahat:Massa</b> tek başına <b>çalışmaz</b> —
+        kara yolu yok. Önce limana git, gemiye bin, geçişi <b>bekle:</b> ile geçir,
+        karaya çıkınca seyahat et. Yemeği <b>binmeden önce</b> alması için
+        alım adımını gemiden önce koy (gemide çantadan yiyor).</p>
+
+      <h5>Kaç gün sürer? (ölçülmüş mesafeler)</h5>
+      <p>Paşa paketi yoksa günde <b>2 adım</b>, varsa <b>3 adım</b> gidilir.</p>
+      <table class="rehber-tablo">
+        <tr><th>Güzergâh</th><th>Gün</th></tr>
+        <tr><td>Glasgow ↔ Stirling / Ardencaple</td><td>1</td></tr>
+        <tr><td>Wigtown ↔ Kirkcudbright / Whithorn</td><td>1</td></tr>
+        <tr><td>Glasgow ↔ Girvan</td><td>2</td></tr>
+        <tr><td>Glasgow ↔ Wigtown / Whithorn · Stirling ↔ Girvan</td><td>3</td></tr>
+        <tr><td>Glasgow ↔ Kirkcudbright · Ardencaple ↔ Wigtown</td><td>4</td></tr>
+      </table>
+
+      <h5>Zinciri sonradan değiştirirsen</h5>
+      <p class="rehber-not">⚠️ Bot "kaçıncı adımdayım" bilgisini <b>listenin
+        metniyle birlikte</b> tutar. Listeyi değiştirirsen sayaç <b>sıfırlanır</b>
+        ve zincir baştan başlar — yarıdayken araya adım eklemek, hesabı yanlış
+        adıma atlatmaktan iyidir. Yazım hatası hesabı <b>kilitlemez</b>:
+        tanınmayan adım sessizce atlanır.</p>
+      <p class="rehber-not">⚠️ <b>OPSEC:</b> 8 hesabı aynı gün aynı kasabaya
+        gönderme. "Aynı gün birlikte hareket eden grup" desenini bizim kendi
+        takip modülümüz yabancılarda tam bu yüzden yakalıyor. 2-3 günde 1 hesap
+        güvenli tempodur.</p>
 
       <h4>🛒 Takip modundaki yeni seçenek: Alışverişçi</h4>
       <p>Bu modu verdiğin hesap önce Midas sandığıyla para biriktirir
@@ -681,6 +788,45 @@ L.RasterCoords.prototype = {
          alım   -> pazar.json    (pazarda GERÇEKTEN ne satılıyorsa)
          ödenek -> sancak.json   (eyalet deposunda ne varsa)
        ======================================================= -->
+  <!-- 📊 EMİR DURUMU — kullanıcı: *"emirler son durumu gibi bişey olsa"*
+       + *"kaç gün kaldı ne oldu ne yaptı filan"* + *"her gün güncellensin"*.
+       Verisi: docs/emirler.json (pazar_json_uret.emirler_uret). -->
+  <section id="tab-emirdurum" class="tab-panel">
+    <p class="bolum-aciklama">
+      Verdiğin emirlerin <strong>şu anki durumu</strong>. Bir emir yapılana kadar
+      kuyrukta bekler; her turda yeniden denenir. <strong>Kalan gün</strong> bitince
+      ya da satış emrinde ürün <strong>7 turdur</strong> bulunamazsa emir kendiliğinden
+      bırakılır ve Telegram'a haber düşer. Aşağıdaki <strong>Geçmiş</strong> bölümünde
+      hangi emrin ne olduğu yazar.
+    </p>
+    <p class="envanter-tarih-notu">Son güncelleme:
+      <span id="emirdurum-tarih">yükleniyor...</span></p>
+
+    <h3>⏳ Bekleyen emirler</h3>
+    <div class="tablo-sarici">
+      <table id="emirdurum-tablo">
+        <thead><tr>
+          <th>Kod</th><th>Tür</th><th>Hesap</th><th>Ürün</th><th>Adet</th>
+          <th>Fiyat</th><th>Alıcı</th><th>Verildi</th><th>Kalan</th><th>Deneme</th>
+        </tr></thead>
+        <tbody id="emirdurum-govde"></tbody>
+      </table>
+      <p id="emirdurum-bos" class="bos-durum" hidden>Bekleyen emir yok — hepsi tamamlandı.</p>
+    </div>
+
+    <h3>📜 Geçmiş <span class="rehber-eski">(son kapanan emirler)</span></h3>
+    <div class="tablo-sarici">
+      <table id="emirgecmis-tablo">
+        <thead><tr>
+          <th>Kod</th><th>Tür</th><th>Hesap</th><th>Ürün</th><th>Adet</th>
+          <th>Sonuç</th><th>Kapandı</th>
+        </tr></thead>
+        <tbody id="emirgecmis-govde"></tbody>
+      </table>
+      <p id="emirgecmis-bos" class="bos-durum" hidden>Henüz kapanmış emir kaydı yok.</p>
+    </div>
+  </section>
+
   <section id="tab-emir" class="tab-panel">
     <p class="bolum-aciklama">
       Kutuları doldur, aşağıdaki mesaj kendiliğinden oluşsun, <strong>Gönder</strong>'e bas.
@@ -882,6 +1028,14 @@ L.RasterCoords.prototype = {
         <label>🌍 Seyahat hedefi
           <input list="ay-sehir-listesi" id="ay-seyahat" placeholder="boş = değiştirme · &quot;iptal&quot; = seyahati kapat" autocomplete="off">
           <datalist id="ay-sehir-listesi"></datalist>
+          <!-- 🖥️ [06.09.2026] Görev zincirindeki `takip:` adımı için.
+               Launcher'daki "Takip Modu" listesiyle aynı. -->
+          <datalist id="ay-takip-listesi">
+            <option value="Yok"></option>
+            <option value="Grup Takip"></option>
+            <option value="Ordu Takip"></option>
+            <option value="Alışverişçi"></option>
+          </datalist>
         </label>
         <label>🎓 Ders alanı
           <input id="ay-ders" placeholder="boş = değiştirme · &quot;iptal&quot; = dersi kapat" autocomplete="off">
