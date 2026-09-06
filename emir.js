@@ -1045,3 +1045,53 @@ function ayKur() {
 emirOlaylariBagla();
 ayKur();
 emirYukle();
+
+/* =========================================================
+   🚫 EMİR İPTAL (06.09.2026)
+   Kullanıcı: *"sitede bekleyen emirleri güncelleme var mı?
+   oradan manuel iptal etme şansımız?"*
+
+   Akış diğer emirlerle AYNI: site metni üretir → pano/ntfy →
+   Telegram → `divan_modul` → `pazar_emirleri.emirleri_iptal_et`.
+   ⚠️ Site doğrudan gönderemez (Telegram botun kendi mesajını geri
+      vermiyor) — bu ölçülmüş bir kısıt, bkz. emir.js açıklaması.
+   ========================================================= */
+
+/* Tek yerden gönderim: pano + (varsa) ntfy + Telegram denemesi.
+   ⚠️ Metin üretimi ÇAĞIRANA aittir; bu fonksiyon yalnızca yollar. */
+async function emirMetniniYolla(metin, durumEl) {
+  await emirPanoyaYaz(metin);
+  if (typeof EMIR_NTFY_AKTIF !== "undefined" && EMIR_NTFY_AKTIF) {
+    try {
+      const y = await fetch("https://ntfy.sh/" + EMIR_NTFY_KONU,
+                            { method: "POST", body: metin });
+      if (!y.ok) throw new Error("durum " + y.status);
+      if (durumEl) durumEl.textContent = "✅ iptal emri bota iletildi";
+      return true;
+    } catch (e) {
+      /* aşağıdaki pano yoluna düşülür */
+    }
+  }
+  if (durumEl) {
+    durumEl.textContent = "📋 Kopyalandı — Telegram grubuna yapıştır " +
+                          "(hangi başlık olduğu farketmez).";
+  }
+  try { emirTelegramdaAc(metin); } catch (e) { /* bonus, şart değil */ }
+  return true;
+}
+
+function emirIptalMetni(kodlar) {
+  return "EMİR İPTAL\nkod: " + kodlar.join(", ");
+}
+
+async function emirIptalEt(kodlar, ozet) {
+  if (!kodlar || !kodlar.length) return;
+  const soru = kodlar.length === 1
+    ? "Bu emir iptal edilsin mi?\n\n" + (ozet || kodlar[0])
+    : kodlar.length + " emrin HEPSİ iptal edilsin mi?";
+  if (!window.confirm(soru + "\n\n(Metin panoya kopyalanır; Telegram'a " +
+                      "yapıştırınca bot emri kuyruktan düşürür.)")) return;
+  const durum = document.getElementById("emirdurum-durum");
+  await emirMetniniYolla(emirIptalMetni(kodlar), durum);
+  if (durum) setTimeout(function () { durum.textContent = ""; }, 9000);
+}
