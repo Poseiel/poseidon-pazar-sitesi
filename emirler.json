@@ -1,7 +1,46 @@
 {
-  "son_guncelleme": "2026-09-06 09:46",
+  "son_guncelleme": "2026-09-06 10:05",
   "azami_gun": 14,
   "azami_deneme": 7,
   "bekleyen": [],
-  "gecmis": []
+  "gecmis": [
+    {
+      "kod": "E10",
+      "tur": "sat",
+      "hesap": "Renegrade",
+      "urun": "Ihlamur yaprağı",
+      "adet": 20,
+      "fiyat": "999.95",
+      "alici": "",
+      "eyalet": true,
+      "serbest": false,
+      "yazan": "Feyyaz",
+      "eklenme": "2026-09-06 07:10",
+      "gecen_gun": 0,
+      "kalan_gun": 14,
+      "deneme": 0,
+      "azami_deneme": 7,
+      "sonuc": "🚫 İPTAL (elle sıfırlandı)",
+      "kapanma": "2026-09-06 10:02"
+    },
+    {
+      "kod": "E4",
+      "tur": "sat",
+      "hesap": "ATREIDES",
+      "urun": "Çuval Buğday",
+      "adet": 113,
+      "fiyat": "en yüksek",
+      "alici": "Toyga",
+      "eyalet": false,
+      "serbest": false,
+      "yazan": "Feyyaz",
+      "eklenme": "2026-09-03 12:32",
+      "gecen_gun": 2,
+      "kalan_gun": 12,
+      "deneme": 0,
+      "azami_deneme": 7,
+      "sonuc": "🚫 İPTAL (elle sıfırlandı)",
+      "kapanma": "2026-09-06 10:02"
+    }
+  ]
 }
