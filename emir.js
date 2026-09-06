@@ -814,10 +814,26 @@ function emirOlaylariBagla() {
 
 var AY_ADIM_TIPLERI = [
   ["seyahat", "🚶 Kasabaya git"],
+  ["varinca", "📍 Oraya VARILMASINI bekle"],
   ["gemiye_bin", "⛵ Gemiye bin"],
   ["satin_al", "🛒 Pazardan al"],
+  ["hersey_sat", "💸 Her şeyi sat"],
+  ["ev_al", "🏠 Ev + tarla al"],
+  ["ev_tasi", "🚚 Evi buraya taşı"],
+  ["atolye", "🏭 Atölye (meslek) al"],
+  ["grup_kur", "👥 Grup kur (lider)"],
+  ["gruba_katil", "🤝 Gruba katıl"],
+  ["grup_dagit", "👥 Grubu dağıt"],
+  ["takip", "🖥️ Takip modunu değiştir"],
   ["bekle", "⏳ Bekle"]
 ];
+
+/* ⚠️ DEĞER İSTEMEYEN adımlar — `gorev_zinciri` ile BİREBİR aynı liste.
+   Bunlarda hedef kutusu kapatılır ve boş olsa bile adım gönderilir. */
+var AY_DEGERSIZ = ["ev_al", "grup_kur", "grup_dagit"];
+
+/* Takip modu seçenekleri (launcher'daki listeyle aynı). */
+var AY_TAKIP_MODLARI = ["Yok", "Grup Takip", "Ordu Takip", "Alışverişçi"];
 
 var ayGorevSayac = 0;
 
@@ -892,7 +908,26 @@ function ayGorevSatiriEkle() {
     //    kullanıcı hiçbir şey ezberlemesin.
     var t = tip.value;
     adet.disabled = (t !== "satin_al");
-    if (t === "seyahat") {
+    // ⚠️ Değer istemeyen adımda hedef kutusu KAPATILIR (kullanıcı boşuna
+    //    bir şey yazmasın); `ayGorevMetni` onu yine de gönderir.
+    hedef.disabled = (AY_DEGERSIZ.indexOf(t) >= 0);
+    if (hedef.disabled) {
+      hedef.value = "";
+      hedef.removeAttribute("list");
+      hedef.placeholder = "(değer gerekmez)";
+      emirGuncelle();
+      return;
+    }
+    if (t === "takip") {
+      hedef.setAttribute("list", "ay-takip-listesi");
+      hedef.placeholder = "Yok / Grup Takip / Ordu Takip";
+    } else if (t === "atolye") {
+      hedef.removeAttribute("list");
+      hedef.placeholder = "meslek (örn. Terzi)";
+    } else if (t === "hersey_sat" || t === "gruba_katil") {
+      hedef.setAttribute("list", "emir-hesap-listesi");
+      hedef.placeholder = (t === "hersey_sat" ? "alıcı hesap" : "grup lideri");
+    } else if (t === "seyahat" || t === "varinca" || t === "ev_tasi") {
       hedef.setAttribute("list", "ay-sehir-listesi");
       hedef.placeholder = "örn. Ardencaple";
     } else if (t === "gemiye_bin") {
@@ -928,7 +963,12 @@ function ayGorevMetni() {
   for (var i = 0; i < satirlar.length; i++) {
     var tip = satirlar[i].querySelector(".ay-gorev-tip").value;
     var hedef = (satirlar[i].querySelector(".ay-gorev-hedef").value || "").trim();
-    if (!hedef) continue;                 // ⚠️ boş adım gönderilmez
+    // ⚠️ Değer istemeyen adım (ev_al/grup_kur/grup_dagit) boş olsa da
+    //    gönderilir; diğerlerinde boş adım gönderilmez.
+    if (!hedef) {
+      if (AY_DEGERSIZ.indexOf(tip) >= 0) { parcalar.push(tip); }
+      continue;
+    }
     if (tip === "satin_al") {
       var a = parseInt(satirlar[i].querySelector(".ay-gorev-adet").value, 10);
       hedef += " x" + (a > 0 ? a : 1);
