@@ -2316,10 +2316,32 @@ async function emirDurumYukle() {
         "<td>" + (e.alici || "—") + "</td>" +
         "<td>" + (e.eklenme || "") + "</td>" +
         "<td>" + emirKalanRozet(e.kalan_gun) + "</td>" +
-        "<td>" + denemeMetni + "</td>";
+        "<td>" + denemeMetni + "</td>" +
+        '<td><button class="emir-iptal-btn" data-kod="' + (e.kod || "") +
+        '">🚫 İptal</button></td>';
       govde.appendChild(tr);
     });
     bos.hidden = bekleyen.length !== 0;
+
+    // 🚫 Satır bazında iptal. ⚠️ Düğmeler her çizimde YENİDEN kurulduğu
+    //    için dinleyici de burada bağlanır (aksi hâlde eski düğmelere
+    //    bağlı kalır ve tazelemeden sonra çalışmaz).
+    govde.querySelectorAll(".emir-iptal-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        const kod = b.getAttribute("data-kod");
+        const e = bekleyen.find(function (x) { return x.kod === kod; }) || {};
+        emirIptalEt([kod],
+                    kod + " · " + emirTurAdi(e.tur) + " · " + (e.hesap || "") +
+                    " · " + (e.urun || "") + " x" + (e.adet || ""));
+      });
+    });
+    const hepsiBtn = document.getElementById("emirdurum-hepsi");
+    if (hepsiBtn) {
+      hepsiBtn.hidden = bekleyen.length < 2;
+      hepsiBtn.onclick = function () {
+        emirIptalEt(bekleyen.map(function (x) { return x.kod; }));
+      };
+    }
 
     const gecmis = veri.gecmis || [];
     const gGovde = document.getElementById("emirgecmis-govde");
