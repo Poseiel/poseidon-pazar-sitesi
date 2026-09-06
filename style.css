@@ -1065,3 +1065,11 @@ a.rk-tamekran {
 }
 .emir-tik { display: flex; align-items: center; gap: 0.4rem; }
 .emir-tik input { width: auto; }
+
+/* 📊 Emir Durumu rozetleri (06.09.2026) */
+.emir-kritik { color: #c62828; font-weight: 700; }
+.emir-uyari  { color: #ef6c00; font-weight: 600; }
+.emir-etiket {
+  font-size: .78em; background: #eceff1; color: #37474f;
+  border-radius: 3px; padding: 1px 5px; margin-left: 4px;
+}
