@@ -187,6 +187,20 @@ async function envanterYukle() {
       esyaSecim.appendChild(opt);
     });
 
+    // 👤 Karakter listesi (yazarken tamamlansın diye datalist).
+    //    Yanında kaç çeşit eşyası ve ne kadar akçesi olduğu yazar.
+    const karListe = document.getElementById("envanter-karakter-listesi");
+    if (karListe) {
+      [...envanterKarakterler]
+        .sort((a, b) => a.karakter.localeCompare(b.karakter, "tr"))
+        .forEach((k) => {
+          const opt = document.createElement("option");
+          opt.value = k.karakter;
+          opt.label = `${k.kasaba} — ${(k.esyalar || []).length} çeşit`;
+          karListe.appendChild(opt);
+        });
+    }
+
     envanterOzetCiz();
     envanterTabloCiz();
   } catch (e) {
@@ -217,6 +231,9 @@ function envanterTabloCiz() {
   const arama = document.getElementById("envanter-arama").value.trim().toLocaleLowerCase("tr-TR");
   const kasabaFiltre = document.getElementById("envanter-kasaba-filtre").value;
   const esyaFiltre = document.getElementById("envanter-esya-filtre").value;
+  // 👤 Karakter süzgeci: kısmi arar ("aieg" → Aiegus), Türkçe duyarlı.
+  const karEl = document.getElementById("envanter-karakter-arama");
+  const karFiltre = karEl ? karEl.value.trim().toLocaleLowerCase("tr-TR") : "";
   const baslik = document.getElementById("envanter-tablo-baslik");
   const govde = document.getElementById("envanter-tablo-govde");
   const toplamEl = document.getElementById("envanter-toplam");
@@ -225,7 +242,10 @@ function envanterTabloCiz() {
   toplamEl.innerHTML = "";
 
   // --- Ne arama ne de eşya seçimi YOKKEN: karakter listesi ---
-  if (!arama && !esyaFiltre) {
+  // ⚠️ Karakter yazıldıysa artık "kimde ne var" değil, "bu kişide ne var"
+  //    sorusu soruluyor → eşya görünümüne geçilir (arama kutusundaki
+  //    davranışın aynısı).
+  if (!arama && !esyaFiltre && !karFiltre) {
     baslik.innerHTML = "<tr><th>Karakter</th><th>Kasaba</th><th>Akçe</th><th>Eşya Çeşidi</th></tr>";
     const filtreli = envanterKarakterler.filter((k) => !kasabaFiltre || k.kasaba === kasabaFiltre);
 
@@ -254,7 +274,9 @@ function envanterTabloCiz() {
     const isimUyar = !arama || s.isim.toLocaleLowerCase("tr-TR").includes(arama);
     const esyaUyar = !esyaFiltre || s.isim === esyaFiltre;
     const kasabaUyar = !kasabaFiltre || s.kasaba === kasabaFiltre;
-    return isimUyar && esyaUyar && kasabaUyar;
+    const karUyar = !karFiltre
+      || s.karakter.toLocaleLowerCase("tr-TR").includes(karFiltre);
+    return isimUyar && esyaUyar && kasabaUyar && karUyar;
   });
 
   [...filtreli]
@@ -304,6 +326,10 @@ function envanterTabloCiz() {
 }
 
 document.getElementById("envanter-arama").addEventListener("input", envanterTabloCiz);
+{
+  const _kar = document.getElementById("envanter-karakter-arama");
+  if (_kar) _kar.addEventListener("input", envanterTabloCiz);
+}
 document.getElementById("envanter-kasaba-filtre").addEventListener("change", envanterTabloCiz);
 document.getElementById("envanter-esya-filtre").addEventListener("change", envanterTabloCiz);
 
@@ -2238,6 +2264,87 @@ function filoTabloCiz() {
   document.getElementById("filo-sonuc-yok").hidden = filtreli.length !== 0;
 }
 
+/* ==========================================================
+   📊 EMİR DURUMU (06.09.2026)
+   Kullanıcı: "emirler son durumu gibi bişey olsa" +
+   "kaç gün kaldı ne oldu ne yaptı filan" + "her gün güncellensin".
+   Verisi: emirler.json (pazar_json_uret.emirler_uret)
+   ⚠️ Eski index.html'de bu sekme yoksa fonksiyon sessizce çıkar.
+   ========================================================== */
+function emirTurAdi(t) {
+  if (t === "sat") return "💰 Satış";
+  if (t === "al") return "🛒 Alım";
+  if (t === "odenek") return "📜 Ödenek";
+  return t || "—";
+}
+
+/* Kalan gün rozeti: azaldıkça dikkat çeker. */
+function emirKalanRozet(kalan) {
+  if (kalan === null || kalan === undefined) return "—";
+  if (kalan <= 0) return '<span class="emir-kritik">süresi doldu</span>';
+  if (kalan <= 3) return '<span class="emir-kritik">' + kalan + " gün</span>";
+  if (kalan <= 7) return '<span class="emir-uyari">' + kalan + " gün</span>";
+  return kalan + " gün";
+}
+
+async function emirDurumYukle() {
+  const t = document.getElementById("emirdurum-tarih");
+  if (!t) return;
+  try {
+    const yanit = await fetch("emirler.json?_=" + Date.now());
+    const veri = await yanit.json();
+    t.textContent = veri.son_guncelleme || "bilinmiyor";
+
+    const bekleyen = veri.bekleyen || [];
+    const govde = document.getElementById("emirdurum-govde");
+    const bos = document.getElementById("emirdurum-bos");
+    govde.innerHTML = "";
+    bekleyen.forEach((e) => {
+      const tr = document.createElement("tr");
+      const etiketler =
+        (e.eyalet ? ' <span class="emir-etiket">eyalet</span>' : "") +
+        (e.serbest ? ' <span class="emir-etiket">serbest</span>' : "");
+      const denemeMetni =
+        e.tur === "sat" ? e.deneme + "/" + e.azami_deneme : "—";
+      tr.innerHTML =
+        "<td>" + (e.kod || "") + "</td>" +
+        "<td>" + emirTurAdi(e.tur) + etiketler + "</td>" +
+        "<td>" + (e.hesap || "") + "</td>" +
+        "<td>" + (e.urun || "") + "</td>" +
+        "<td>" + (e.adet === null || e.adet === undefined ? "" : e.adet) + "</td>" +
+        "<td>" + (e.fiyat || "") + "</td>" +
+        "<td>" + (e.alici || "—") + "</td>" +
+        "<td>" + (e.eklenme || "") + "</td>" +
+        "<td>" + emirKalanRozet(e.kalan_gun) + "</td>" +
+        "<td>" + denemeMetni + "</td>";
+      govde.appendChild(tr);
+    });
+    bos.hidden = bekleyen.length !== 0;
+
+    const gecmis = veri.gecmis || [];
+    const gGovde = document.getElementById("emirgecmis-govde");
+    const gBos = document.getElementById("emirgecmis-bos");
+    gGovde.innerHTML = "";
+    gecmis.forEach((e) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + (e.kod || "") + "</td>" +
+        "<td>" + emirTurAdi(e.tur) + "</td>" +
+        "<td>" + (e.hesap || "") + "</td>" +
+        "<td>" + (e.urun || "") + "</td>" +
+        "<td>" + (e.adet === null || e.adet === undefined ? "" : e.adet) + "</td>" +
+        "<td>" + (e.sonuc || "") + "</td>" +
+        "<td>" + (e.kapanma || "") + "</td>";
+      gGovde.appendChild(tr);
+    });
+    gBos.hidden = gecmis.length !== 0;
+  } catch (e) {
+    t.textContent = "yüklenemedi";
+    console.error("Emir durumu yüklenemedi:", e);
+  }
+}
+
+
 async function filoYukle() {
   const t = document.getElementById("filo-rapor-tarihi");
   if (!t) return;                       // eski index.html — sessizce çık
@@ -2309,6 +2416,7 @@ sancakYukle();
 belediyeYukle();
 envanterSekmesiKur("liman", "liman.json", "limanlar", "Liman");
 filoYukle();
+emirDurumYukle();
 gelisimYukle();
 hareketYukle();
 haritaYukle();
