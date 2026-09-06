@@ -808,11 +808,20 @@ L.RasterCoords.prototype = {
         <thead><tr>
           <th>Kod</th><th>Tür</th><th>Hesap</th><th>Ürün</th><th>Adet</th>
           <th>Fiyat</th><th>Alıcı</th><th>Verildi</th><th>Kalan</th><th>Deneme</th>
+          <th>İşlem</th>
         </tr></thead>
         <tbody id="emirdurum-govde"></tbody>
       </table>
       <p id="emirdurum-bos" class="bos-durum" hidden>Bekleyen emir yok — hepsi tamamlandı.</p>
     </div>
+    <p>
+      <button id="emirdurum-hepsi" class="emir-ana-btn" hidden>🚫 Hepsini iptal et</button>
+      <span id="emirdurum-durum" class="emir-durum"></span>
+    </p>
+    <p class="rehber-not">⚠️ İptal <b>anında</b> olmaz: metin panoya
+      kopyalanır, Telegram grubuna yapıştırırsın, bot sıradaki okumada
+      (2 hesapta bir) emri kuyruktan düşürür. Site doğrudan gönderemiyor —
+      Telegram botun kendi mesajını ona geri vermiyor.</p>
 
     <h3>📜 Geçmiş <span class="rehber-eski">(son kapanan emirler)</span></h3>
     <div class="tablo-sarici">
