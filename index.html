@@ -348,8 +348,40 @@ L.RasterCoords.prototype = {
         <tr><td>🛒 <b>Alım</b></td><td>Pazardan mal aldırır. <b>Tavan fiyat</b> belirlersin, o fiyatın üstüne çıkmaz. “🔢 pazara göre hesapla” düğmesi güncel fiyattan makul bir tavan önerir.</td><td>Hesabın parası yetmezse eldeki kadar alır, emri boşa harcamaz.</td></tr>
         <tr><td>📜 <b>Ödenek</b></td><td>Sancak kasasından bir kişiye ödenek (sözleşme) çıkarır. Birden çok mal satırı ekleyebilirsin.</td><td>Bot içeriği <b>doğrulamadan</b> kimseye vermez; uyuşmazsa ödeneği iptal eder.</td></tr>
         <tr><td>✉️ <b>Mesaj</b></td><td>Oyun içi mesaj yollar. Filo sekmesinde bir geminin yanındaki ✉️ düğmesine basarsan alıcı hazır gelir.</td><td>Gönderecek karakteri <b>elle</b> yazarsın; o ad hiçbir yere kaydedilmez, yalnızca kendi tarayıcın hatırlar. Konu boş bırakılabilir.</td></tr>
+        <tr><td>🚫 <b>İptal</b></td><td>Bekleyen bir emri kuyruktan düşürür. <b>📊 Emir Durumu</b> sekmesindeki düğmeden üretilir.</td><td>Metin panoya kopyalanır, Telegram’a yapıştırırsın; anında değildir.</td></tr>
         <tr><td>🖥️ <b>Ayar</b><br><span class="rehber-eski">en güçlüsü</span></td><td><b>Launcher’ın yaptığı her hesap ayarını buradan verirsin</b> — bilgisayarın başında olmana gerek kalmaz. Takip modu, ders, seyahat, gemi, kaptan, ases, inziva, divan görevi, puan, işçi, armatör ve <b>görev zinciri</b>.</td><td>Aşağıdaki iki uyarıyı mutlaka oku.</td></tr>
       </table>
+
+      <h3>📊 Emirlerin son durumu — <b>Emir Durumu</b> sekmesi</h3>
+      <p>Verdiğin emir hemen olmaz; <b>kuyrukta bekler</b> ve o hesap her oyuna
+        girdiğinde yeniden denenir. “Ne oldu, oldu mu, kaç gün kaldı?” sorusunun
+        cevabı bu sekmede.</p>
+      <table class="rehber-tablo">
+        <tr><th>Sütun</th><th>Ne anlatır</th></tr>
+        <tr><td><b>Kalan</b></td><td>Emrin ömrü <b>14 gün</b>. Süre dolarsa emir kendiliğinden bırakılır ve Telegram’a haber düşer. <span class="emir-uyari">3-7 gün turuncu</span>, <span class="emir-kritik">3 günden az kırmızı</span> yazar.</td></tr>
+        <tr><td><b>Deneme</b></td><td>Yalnızca <b>satış</b> emirlerinde. Ürün o hesabın ne çantasında ne evinde bulunamazsa sayaç artar; <b>7 turda</b> bulunamazsa emir bırakılır. Yani “yanlış hesaba satış emri verdim” durumu sonsuza kadar sürüklenmez.</td></tr>
+        <tr><td><b>İptal</b></td><td>Emri kuyruktan düşürür (aşağıda).</td></tr>
+      </table>
+      <p class="rehber-not">📌 <b>Kısmi iş emri kapatmaz.</b> 50 adet istediysen
+        ve pazarda 8 tane varsa, 8’i alınır ve emir <b>42 adet</b> olarak kuyrukta
+        kalır; bütçe de orantılı düşer. Ertesi tur kalanın peşine düşer.</p>
+      <p class="rehber-not">📜 Alttaki <b>Geçmiş</b> tablosu kapanan emirleri
+        sonucuyla gösterir: <span class="rehber-eski">✅ SATILDI (10 adet · 18,00 akçe)</span> ·
+        <span class="rehber-eski">✅ ALINDI (50 adet)</span> ·
+        <span class="rehber-eski">🗑️ BIRAKILDI (14 gün doldu)</span> ·
+        <span class="rehber-eski">🚫 İPTAL</span>. En yeni en üstte.</p>
+
+      <h4>🚫 Emri iptal etmek</h4>
+      <p>Satırdaki <b>🚫 İptal</b> düğmesine bas → onay ver → metin panoya
+        kopyalanır → Telegram grubuna yapıştır. Bot sıradaki okumada
+        (<b>2 hesapta bir</b>) emri kuyruktan düşürür ve geçmişe yazar.
+        Birden çok bekleyen emir varsa altta <b>🚫 Hepsini iptal et</b> çıkar.</p>
+      <p class="rehber-not">⚠️ İptal <b>anında değildir</b> — site oyuna ve bota
+        doğrudan bağlanamıyor, her emir gibi Telegram üzerinden gider.
+        Bot o an sıradaki hesabı işliyorsa birkaç dakika sürebilir.</p>
+      <p class="rehber-not">⚠️ Telegram’a <b>“emirleri iptal edelim mi”</b> gibi
+        bir cümle yazman hiçbir şeyi silmez. Bot yalnızca ilk satırında
+        <b>EMİR İPTAL</b> yazan mesajı emir sayar — sohbet güvende.</p>
 
       <h4>🖥️ Ayar emri — bilmen gereken üç şey</h4>
       <ol class="rehber-liste">
@@ -490,7 +522,10 @@ L.RasterCoords.prototype = {
       <table class="rehber-tablo">
         <tr><td><b>Emri gönderdim, ne zaman olur?</b></td><td>O karakter sıradaki turda oyuna girdiğinde. Bot sabah erken başlıyor. <b>Pazar emirleri</b> için ayrıca: bot <b>2 hesapta bir</b> Telegram’ı yeniden okur, yani gün içinde yazdığın emir ertesi güne kalmaz.</td></tr>
         <tr><td><b>Emir gitti mi, anlayamıyorum</b></td><td>Bot bir emri işlediğinde Telegram’a haber düşer. Hiç ses çıkmadıysa mesaj şablona uymamış olabilir — site kutularıyla oluşturduğun metni <b>değiştirmeden</b> gönder.</td></tr>
-        <tr><td><b>Yanlış emir gönderdim</b></td><td>Telegram’a yaz, ana makinedeki kişi kuyruktan düşürebilir. Ayar emri için daha kolayı: aynı kutuyu <b>“kapalı”</b>/<b>“iptal”</b> yapıp yeniden gönder.</td></tr>
+        <tr><td><b>Yanlış emir gönderdim</b></td><td><b>📊 Emir Durumu</b> sekmesine git, o satırdaki <b>🚫 İptal</b> düğmesine bas. (Ayar emri için farklı: aynı kutuyu <b>“kapalı”</b>/<b>“iptal”</b> yapıp yeniden gönder.)</td></tr>
+        <tr><td><b>Emrim yapıldı mı, yoksa hâlâ mı bekliyor?</b></td><td><b>📊 Emir Durumu</b>: üstteki tabloda duruyorsa <b>bekliyor</b>, alttaki <b>Geçmiş</b> tablosundaysa kapanmış — sonucu orada yazar.</td></tr>
+        <tr><td><b>Emrim neden hâlâ yapılmadı?</b></td><td>Üç sık sebep: ① ürün o hesapta yok (satışta <b>Deneme</b> sayacı artar), ② pazarda hiç yok ya da tavanının üstünde (alımda), ③ o hesap bugün henüz oyuna girmedi. Emir kaybolmaz, ertesi tur devam eder.</td></tr>
+        <tr><td><b>Belirli bir karakterde ne var, nasıl bakarım?</b></td><td><b>Envanter</b> sekmesindeki <b>👤 Karakter ara</b> kutusuna adını yaz (<span class="rehber-eski">aieg</span> yazsan da bulur). Sadece o kişinin malzemeleri listelenir.</td></tr>
         <tr><td><b>Site eski veri gösteriyor</b></td><td>Önce tarih satırına bak (her sekmenin üstünde). Gerçekten eskiyse sayfayı <b>Ctrl+F5</b> ile yenile. Sabah Envanter/Gelişim’in dünkü olması normaldir.</td></tr>
         <tr><td><b>Bir hesabı sitede bulamıyorum</b></td><td>Kim Nerede yalnızca <b>7 ajan kasabasını</b> kapsar. Hesap başka kasabadaysa ya da yoldaysa orada görünmez — <b>Gelişim</b> sekmesinde ise her hesap vardır.</td></tr>
         <tr><td><b>Denizdeki gemiler neden Filo’da yok?</b></td><td>Oyun onları göstermiyor — bir gemiyi ancak yakınındaysan görüyorsun. Filo yalnızca <b>rıhtımdaki</b> gemileri sayar. Kaptanın çevresindeki gemileri günlük kaptan raporunda görürsün.</td></tr>
@@ -510,6 +545,9 @@ L.RasterCoords.prototype = {
         <tr><td>Birinin multi olup olmadığına bakmak</td><td><b>İnziva</b> (aynı gün girip çıkanlar) — Hareket değil</td></tr>
         <tr><td>Limanımıza kim geldi görmek</td><td><b>⛵ Filo</b> → 🔴 yabancı işaretlileri</td></tr>
         <tr><td>Bir hesaba ders/gemi/ases görevi vermek</td><td><b>Emir → 🖥️ Ayar</b> → ilgili kutu</td></tr>
+        <tr><td>Verdiğim emir ne oldu görmek</td><td><b>📊 Emir Durumu</b> → üstte bekleyenler, altta geçmiş</td></tr>
+        <tr><td>Yanlış verdiğim emri geri almak</td><td><b>📊 Emir Durumu</b> → o satırda <b>🚫 İptal</b></td></tr>
+        <tr><td>Tek bir karakterin eşyalarını görmek</td><td><b>Envanter</b> → <b>👤 Karakter ara</b> kutusuna adını yaz</td></tr>
       </table>
     </div>
   </section>
