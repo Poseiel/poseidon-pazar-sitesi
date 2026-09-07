@@ -819,6 +819,7 @@ var AY_ADIM_TIPLERI = [
   ["satin_al", "🛒 Pazardan al"],
   ["hersey_sat", "💸 Her şeyi sat"],
   ["ev_al", "🏠 Ev + tarla al"],
+  ["tarla_al", "🌾 Tarla al (tip seç)"],
   ["ev_tasi", "🚚 Evi buraya taşı"],
   ["atolye", "🏭 Atölye (meslek) al"],
   ["grup_kur", "👥 Grup kur (lider)"],
@@ -833,7 +834,8 @@ var AY_ADIM_TIPLERI = [
 var AY_DEGERSIZ = ["ev_al", "grup_kur", "grup_dagit"];
 
 /* Takip modu seçenekleri (launcher'daki listeyle aynı). */
-var AY_TAKIP_MODLARI = ["Yok", "Grup Takip", "Ordu Takip", "Alışverişçi"];
+var AY_TAKIP_MODLARI = ["Yok", "Grup Takip", "Ordu Takip", "Alışverişçi",
+                        "Hızlı Maden", "Hızlı Cami"];
 
 var ayGorevSayac = 0;
 
@@ -918,9 +920,14 @@ function ayGorevSatiriEkle() {
       emirGuncelle();
       return;
     }
-    if (t === "takip") {
+    if (t === "tarla_al") {
+      // ⚠️ Liste `ev_atolye_modul.TARLA_TIPLERI` ile BİREBİR aynı olmalı
+      //    (canlı HTML'den ölçüldü, 12 tip).
+      hedef.setAttribute("list", "ay-tarla-listesi");
+      hedef.placeholder = "örn. Mısır (boş = tip seçilmez)";
+    } else if (t === "takip") {
       hedef.setAttribute("list", "ay-takip-listesi");
-      hedef.placeholder = "Yok / Grup Takip / Ordu Takip";
+      hedef.placeholder = "Yok / Grup Takip / Ordu Takip / Hızlı Maden";
     } else if (t === "atolye") {
       hedef.removeAttribute("list");
       hedef.placeholder = "meslek (örn. Terzi)";
