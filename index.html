@@ -511,6 +511,16 @@ L.RasterCoords.prototype = {
       <p class="rehber-not">⚠️ Bu moddaki hesap <b>topladığı malı satmaz</b> —
         biriktirmek için var. Aynı hesapta seyahat modunu açma, ikisi çakışır.</p>
 
+      <h4>⚡ Takip modundaki yeni seçenek: Hızlı Maden / Hızlı Cami (yeni hesaplar)</h4>
+      <p>Yeni açılan hesaplar için <b>2 dakikalık</b> tur: hesap girer, karakter
+        ölmüşse <b>"Hayata dön"e basar</b>, sonra <b>madene</b> (Hızlı Maden) ya da
+        <b>camiye</b> (Hızlı Cami) girip çıkar. Yemek, ödül, posta, Midas, pazar,
+        tarla — <b>hiçbiri yapılmaz</b>. Kendi Chrome profili ve taze IP kuralı
+        aynen geçerlidir.</p>
+      <p class="rehber-not">⚠️ Bu hesaplar yemek yemediği için birkaç günde bir ölür;
+        bot ertesi girişte diriltir. Maden kapalıysa camiye, cami doluysa madene düşer.
+        Hesap büyüyünce takip modunu <b>Yok</b> yap, normal tura döner.</p>
+
       <h3>💬 Telegram’dan cevap yazma <span class="rehber-eski">(bunu zaten biliyorsunuz)</span></h3>
       <p>Divan/belediye hesaplarımıza oyunda mesaj gelince bot bunu Telegram’a düşürür
         (orijinali + Türkçesi). O mesaja Telegram’da <b>“Yanıtla”</b> ile cevap yazarsan,
@@ -1021,6 +1031,8 @@ L.RasterCoords.prototype = {
             <option value="Grup Takip">Grup Takip</option>
             <option value="Ordu Takip">Ordu Takip</option>
             <option value="Alışverişçi">🛒 Alışverişçi</option>
+            <option value="Hızlı Maden">⚡ Hızlı Maden (yeni hesap)</option>
+            <option value="Hızlı Cami">⚡ Hızlı Cami (yeni hesap)</option>
           </select>
         </label>
       </div>
@@ -1077,11 +1089,30 @@ L.RasterCoords.prototype = {
           <datalist id="ay-sehir-listesi"></datalist>
           <!-- 🖥️ [06.09.2026] Görev zincirindeki `takip:` adımı için.
                Launcher'daki "Takip Modu" listesiyle aynı. -->
+          <!-- 🌾 [06.09.2026] Tarla tipleri — canlı HTML'den ölçüldü
+               (data-idtype 1-12). `ev_atolye_modul.TARLA_TIPLERI` ile
+               BİREBİR aynı olmalı. -->
+          <datalist id="ay-tarla-listesi">
+            <option value="Buğday"></option>
+            <option value="Mısır"></option>
+            <option value="Sebze"></option>
+            <option value="Manda"></option>
+            <option value="Koç"></option>
+            <option value="Sığır"></option>
+            <option value="Zeytin Bahçesi"></option>
+            <option value="Üzüm bağı"></option>
+            <option value="Arpa"></option>
+            <option value="Keçiler"></option>
+            <option value="Koyun Yetiştiriciliği"></option>
+            <option value="Arıcılık"></option>
+          </datalist>
           <datalist id="ay-takip-listesi">
             <option value="Yok"></option>
             <option value="Grup Takip"></option>
             <option value="Ordu Takip"></option>
             <option value="Alışverişçi"></option>
+            <option value="Hızlı Maden"></option>
+            <option value="Hızlı Cami"></option>
           </datalist>
         </label>
         <!-- 🎓 [06.09.2026] Kullanıcı: *"sitede ayarda, vereceği ders gibi,
