@@ -1,5 +1,5 @@
 {
-  "son_guncelleme": "2026-09-08 22:36",
+  "son_guncelleme": "2026-09-09 01:42",
   "rapor_tarihi": "2026-09-08",
   "karakterler": [
     {
@@ -288,7 +288,7 @@
     {
       "karakter": "RENEGRADE",
       "kasaba": "Glasgow",
-      "akce": 36723.98,
+      "akce": 37054.93,
       "esyalar": [
         {
           "isim": "Acıbadem Likörü",
@@ -528,11 +528,11 @@
         },
         {
           "isim": "Sebze",
-          "adet": 912
+          "adet": 878
         },
         {
           "isim": "Sebzeli Turta",
-          "adet": 4
+          "adet": 15
         },
         {
           "isim": "Selevkus Zırhı",
@@ -552,11 +552,15 @@
         },
         {
           "isim": "Somun Ekmeği",
-          "adet": 150
+          "adet": 127
         },
         {
           "isim": "Sorianne'in Sapancısı",
           "adet": 1
+        },
+        {
+          "isim": "Sütlü Çörek",
+          "adet": 3
         },
         {
           "isim": "Taş",
@@ -619,10 +623,6 @@
           "adet": 3
         },
         {
-          "isim": "Çuval Mısır",
-          "adet": 1
-        },
-        {
           "isim": "Çuval Un",
           "adet": 24
         },
@@ -656,7 +656,7 @@
         },
         {
           "isim": "Şişe Süt",
-          "adet": 39
+          "adet": 27
         }
       ]
     },
@@ -4358,10 +4358,14 @@
     {
       "karakter": "SORCHADUSK",
       "kasaba": "Wigtown",
-      "akce": 107.68,
+      "akce": 106.53,
       "esyalar": [
         {
           "isim": "Antik Yunan Çömleği",
+          "adet": 1
+        },
+        {
+          "isim": "Balık",
           "adet": 1
         },
         {
@@ -5168,7 +5172,7 @@
     {
       "karakter": "BAFETIMBI",
       "kasaba": "Stirling",
-      "akce": 4749.05,
+      "akce": 4694.86,
       "esyalar": [
         {
           "isim": "Balta",
@@ -5196,7 +5200,7 @@
         },
         {
           "isim": "Kova",
-          "adet": 2
+          "adet": 3
         },
         {
           "isim": "Kâşif Pantolonu (Siyah)",
@@ -5253,13 +5257,17 @@
         {
           "isim": "Şalvar",
           "adet": 1
+        },
+        {
+          "isim": "Şişe Süt",
+          "adet": 8
         }
       ]
     },
     {
       "karakter": "DWADU",
       "kasaba": "Ardencaple",
-      "akce": 1591.76,
+      "akce": 1637.26,
       "esyalar": [
         {
           "isim": "Aliii'nin Bebek Taşıyıcısı",
@@ -5331,6 +5339,10 @@
         },
         {
           "isim": "Dört Hane Önlüğü",
+          "adet": 1
+        },
+        {
+          "isim": "Dövülmemiş Balta Ağzı",
           "adet": 1
         },
         {
@@ -5515,7 +5527,7 @@
         },
         {
           "isim": "Tomruk Odun",
-          "adet": 9
+          "adet": 10
         },
         {
           "isim": "Yaban Çileği Likörü",
@@ -5897,7 +5909,7 @@
     {
       "karakter": "HELSINKII",
       "kasaba": "Stirling",
-      "akce": 285.54,
+      "akce": 194.77,
       "esyalar": [
         {
           "isim": "Biberiye Ballı Krep",
@@ -5918,6 +5930,10 @@
         {
           "isim": "Mucizevi Kiraz Merhemi",
           "adet": 1
+        },
+        {
+          "isim": "Sütlü Çörek",
+          "adet": 3
         },
         {
           "isim": "Çubuk Kil",
