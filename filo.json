@@ -1,6 +1,6 @@
 {
-  "son_guncelleme": "2026-09-07 20:18",
-  "rapor_tarihi": "2026-09-07",
+  "son_guncelleme": "2026-09-08 09:57",
+  "rapor_tarihi": "2026-09-08",
   "limanlar": [
     {
       "liman": "Ardencaple",
@@ -197,10 +197,10 @@
           "durum": ""
         },
         {
-          "armator": "scarlette_",
+          "armator": "pontiac_bandit",
           "gemi": "The Edger",
           "tur": "Mavna",
-          "taraf": "yabanci",
+          "taraf": "dost",
           "durum": ""
         },
         {
@@ -227,8 +227,8 @@
       ],
       "sayim": {
         "bizim": 0,
-        "dost": 5,
-        "yabanci": 2
+        "dost": 6,
+        "yabanci": 1
       }
     },
     {
