@@ -1,6 +1,6 @@
 {
-  "son_guncelleme": "2026-09-07 20:18",
-  "rapor_tarihi": "2026-09-07",
+  "son_guncelleme": "2026-09-08 09:57",
+  "rapor_tarihi": "2026-09-08",
   "onemli": [
     "Akçe",
     "Külçe Demir",
@@ -14,8 +14,8 @@
       "sancak": "County of Glasgow",
       "kasaba": "Glasgow",
       "nazir": "Renegrade",
-      "hazine": 3118.33,
-      "akce": 3118.33,
+      "hazine": 1452.33,
+      "akce": 1452.33,
       "agirlik": 0,
       "esyalar": [
         {
@@ -104,7 +104,7 @@
         },
         {
           "isim": "Külçe Demir",
-          "adet": 594
+          "adet": 600
         },
         {
           "isim": "Kürek",
@@ -204,7 +204,7 @@
         },
         {
           "isim": "Çeki Taş",
-          "adet": 2987
+          "adet": 3001
         },
         {
           "isim": "Çelik Kasnak",
@@ -216,7 +216,7 @@
         },
         {
           "isim": "Çubuk Kil",
-          "adet": 268
+          "adet": 272
         },
         {
           "isim": "Çuval Arpa",
