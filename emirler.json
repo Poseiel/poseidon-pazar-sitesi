@@ -1,27 +1,8 @@
 {
-  "son_guncelleme": "2026-09-08 22:36",
+  "son_guncelleme": "2026-09-09 01:42",
   "azami_gun": 14,
   "azami_deneme": 7,
   "bekleyen": [
-    {
-      "kod": "E11",
-      "tur": "sat",
-      "hesap": "Renegrade",
-      "urun": "Ihlamur yaprağı",
-      "adet": 35,
-      "fiyat": "999.95",
-      "alici": "VAMDER",
-      "eyalet": true,
-      "serbest": false,
-      "yazan": "Feyyaz",
-      "eklenme": "2026-09-07 08:42",
-      "gecen_gun": 1,
-      "kalan_gun": 13,
-      "deneme": 0,
-      "azami_deneme": 7,
-      "sonuc": "",
-      "kapanma": ""
-    },
     {
       "kod": "E12",
       "tur": "sat",
@@ -59,25 +40,27 @@
       "azami_deneme": 7,
       "sonuc": "",
       "kapanma": ""
-    },
+    }
+  ],
+  "gecmis": [
     {
-      "kod": "E14",
+      "kod": "E11",
       "tur": "sat",
-      "hesap": "RENEGRADE",
-      "urun": "Gülhatmi Buketi",
-      "adet": 3,
-      "fiyat": "en düşük",
-      "alici": "",
-      "eyalet": false,
+      "hesap": "Renegrade",
+      "urun": "Ihlamur yaprağı",
+      "adet": 35,
+      "fiyat": "999.95",
+      "alici": "VAMDER",
+      "eyalet": true,
       "serbest": false,
       "yazan": "Feyyaz",
-      "eklenme": "2026-09-08 20:35",
-      "gecen_gun": 0,
-      "kalan_gun": 14,
+      "eklenme": "2026-09-07 08:42",
+      "gecen_gun": 1,
+      "kalan_gun": 13,
       "deneme": 0,
       "azami_deneme": 7,
-      "sonuc": "",
-      "kapanma": ""
+      "sonuc": "🚫 İPTAL (Feyyaz)",
+      "kapanma": "2026-09-08 23:32"
     },
     {
       "kod": "E15",
@@ -95,11 +78,28 @@
       "kalan_gun": 14,
       "deneme": 0,
       "azami_deneme": 7,
-      "sonuc": "",
-      "kapanma": ""
-    }
-  ],
-  "gecmis": [
+      "sonuc": "🚫 İPTAL (Feyyaz)",
+      "kapanma": "2026-09-08 23:32"
+    },
+    {
+      "kod": "E14",
+      "tur": "sat",
+      "hesap": "RENEGRADE",
+      "urun": "Gülhatmi Buketi",
+      "adet": 3,
+      "fiyat": "en düşük",
+      "alici": "",
+      "eyalet": false,
+      "serbest": false,
+      "yazan": "Feyyaz",
+      "eklenme": "2026-09-08 20:35",
+      "gecen_gun": 0,
+      "kalan_gun": 14,
+      "deneme": 0,
+      "azami_deneme": 7,
+      "sonuc": "🚫 İPTAL (Feyyaz)",
+      "kapanma": "2026-09-08 23:32"
+    },
     {
       "kod": "E10",
       "tur": "sat",
