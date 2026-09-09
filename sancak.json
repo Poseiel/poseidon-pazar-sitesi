@@ -1,6 +1,6 @@
 {
-  "son_guncelleme": "2026-09-09 01:42",
-  "rapor_tarihi": "2026-09-08",
+  "son_guncelleme": "2026-09-09 08:31",
+  "rapor_tarihi": "2026-09-09",
   "onemli": [
     "Akçe",
     "Külçe Demir",
@@ -14,8 +14,8 @@
       "sancak": "County of Glasgow",
       "kasaba": "Glasgow",
       "nazir": "Renegrade",
-      "hazine": 1452.33,
-      "akce": 1452.33,
+      "hazine": 31520.02,
+      "akce": 31520.02,
       "agirlik": 0,
       "esyalar": [
         {
@@ -72,7 +72,7 @@
         },
         {
           "isim": "Ihlamur yaprağı",
-          "adet": 105
+          "adet": 75
         },
         {
           "isim": "Kara Orman Jambonu",
@@ -104,7 +104,7 @@
         },
         {
           "isim": "Külçe Demir",
-          "adet": 600
+          "adet": 604
         },
         {
           "isim": "Kürek",
@@ -204,7 +204,7 @@
         },
         {
           "isim": "Çeki Taş",
-          "adet": 3001
+          "adet": 3015
         },
         {
           "isim": "Çelik Kasnak",
