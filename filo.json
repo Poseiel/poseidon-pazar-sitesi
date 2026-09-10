@@ -1,6 +1,6 @@
 {
-  "son_guncelleme": "2026-09-09 18:17",
-  "rapor_tarihi": "2026-09-09",
+  "son_guncelleme": "2026-09-10 08:41",
+  "rapor_tarihi": "2026-09-10",
   "limanlar": [
     {
       "liman": "Ardencaple",
@@ -41,6 +41,20 @@
           "durum": ""
         },
         {
+          "armator": "seldomseen",
+          "gemi": "Aurora mirage",
+          "tur": "Ceneviz Gemisi",
+          "taraf": "yabanci",
+          "durum": ""
+        },
+        {
+          "armator": "sensha",
+          "gemi": "La Soñadora",
+          "tur": "Ceneviz Gemisi",
+          "taraf": "yabanci",
+          "durum": ""
+        },
+        {
           "armator": "tedy_macalpine",
           "gemi": "caledonia",
           "tur": "Korvet",
@@ -65,7 +79,7 @@
       "sayim": {
         "bizim": 0,
         "dost": 1,
-        "yabanci": 7
+        "yabanci": 9
       }
     },
     {
